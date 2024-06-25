@@ -86,17 +86,25 @@ export default function HomePage() {
     setMessage("");
     if (flightBooking) {
       try {
-        let tx = await flightBooking.cancelBooking();
+        const gasLimit = 100000; 
+        let tx = await flightBooking.cancelBooking({ gasLimit });
         await tx.wait();
         getBookingStatus();
         setMessage("Flight cancelled successfully!");
       } catch (error) {
-        const errorMessage = error.data?.message || error.message || error.toString();
-        const userMessage = errorMessage.includes("No flight to cancel")
-          ? "No flights to cancel!"
-          : "Unable to cancel booking: " + errorMessage;
-        setMessage(userMessage);
+        // Handle user rejection
+        if (error.code === "ACTION_REJECTED") { 
+          setMessage("Unable to cancel booking: User rejected transaction");
+        } else if (error.code === -32603 && error.data?.message.includes("No flight to cancel")) {
+          setMessage("No flights to cancel!");
+        } else {
+          // For other errors, show a general error message
+          const errorMessage = error.data?.message || error.message || "Unknown error";
+          setMessage("Unable to cancel booking: " + errorMessage);
+        }
       }
+    } else {
+      setMessage("FlightBooking contract is not available.");
     }
   };
 
