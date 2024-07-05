@@ -102,7 +102,7 @@ If you encounter any issues or need further assistance, refer to the help comman
 
 Contributors names and contact info:
 
-Samyak Jain[https://www.linkedin.com/in/samyak-jain-179710233/]
+[Samyak Jain](https://www.linkedin.com/in/samyak-jain-179710233/)
 
 ## License
 This project is licensed under the MIT License - see the LICENSE.md file for details.
